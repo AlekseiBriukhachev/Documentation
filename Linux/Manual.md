@@ -2,15 +2,20 @@
 
 ## Content
 
-[1. Installation Linux to PC](#1-installation-linux-to-pc)<br>
-[2. Simple commands](#2-simple-commands)<br>
-[3. Files And Directories Navigation](#3-files-and-directories-navigation)<br>
-[4. Work with files](#4-work-with-files)<br>
-[5. Work With Direstories](#5-work-with-direstories)<br>
-[6. Links creating](#6-links-creating)<br>
-[7. Commands *find, cut, sort, wc, I*](#7-commands-find-cut-sort-wc-i)<br>
+[1. Installation Linux to PC and introduction](#1-installation-linux-to-pc-and-introduction)<br>
+[1.1 Installation VM](#11-installation-vm)<br>
+[1.2 Prepeare terminal](#12-prepeare-terminal)<br>
+[2. Work with terminal and base commands](#2-work-with-terminal-and-base-commands)<br>
+[2.1 Base Commands](#21-base-commands)<br>
+[2.2 Files And Directories Navigation](#22-files-and-directories-navigation)<br>
+[2.3 Work with files](#23-work-with-files)<br>
+[2.4 Work With Direstories](#24-work-with-direstories)<br>
+[2.5 Links creating](#25-links-creating)<br>
+[2.6 Commands *find, cut, sort, wc, | (pipe)*](#26-commands-find-cut-sort-wc--pipe)<br>
+[2.7 Command *grep* and regular expressions](#27-command-grep-and-regular-expressions)<br>
+[2.8 Redirection of output](#28-redirection-of-output)<br>
 
-## 1. Installation Linux to PC
+## 1. Installation Linux to PC and introduction
 
 ### 1.1 Installation VM
 
@@ -34,7 +39,9 @@
     ~ - we are in ROOT directory
     ```
 
-## 2. Simple Commands
+## 2. Work with terminal and base commands
+
+### 2.1 Base Commands
 
 |Command|Description|
 |-:|:-|
@@ -66,7 +73,7 @@
 |ls -la -R /|List of all files, all directories in all disks|
 |sudo|**S**uper**U**ser **DO** with admin permission. Need enter password|
 
-## 3. Files And Directories Navigation
+### 2.2 Files And Directories Navigation
 
 |Command|Description|
 |-:|:-|
@@ -77,7 +84,7 @@
 |cd ../..|Return back a two levels up|
 |cd or cd ~|Return to home directory. **~** = /home/username|
 
-## 4. Work with files
+### 2.3 Work with files
 
 |Command|Description|
 |-:|:-|
@@ -92,7 +99,7 @@
 |cp -R \<src_dir> <dest_dir>|Copy all files from one directory to another directory. **-R** -> recursevelly|
 |mv \<filename> <new_filename>|Rename/replace file. dot before filename (\<.filename>) means that file is hidden. File will be replaced when \<new_filename> is directory absolute path.|
 
-## 5. Work With Direstories
+### 2.4 Work With Direstories
 
 |Command|Description|
 |-:|:-|
@@ -104,7 +111,7 @@
 |cp -R \<dir_name_1> <dir_name_2>|Copy one direcory to another recursevelly|
 |sudo rm -R / --no-preserve-root|Remove all in **ROOT** directory. ***!!!DANGEROUS KILL THE LINUX OS!!!***|
 
-## 6. Links creating
+### 2.5 Links creating
 
 What is "link" - link is like shortcut to directory or to file, virtual presenting of file or directory. 
 
@@ -135,7 +142,7 @@ What is "link" - link is like shortcut to directory or to file, virtual presenti
     ```
     Number after attributes `-rw-rw-r--` show how much duplicates has file. If you change one of two files it will be changed both files. If you delete one of file another file will stay without changing.
 
-## 7. Commands *find, cut, sort, wc, I*
+### 2.6 Commands *find, cut, sort, wc, | (pipe)*
 
 1. Command ***find***
     
@@ -189,8 +196,65 @@ What is "link" - link is like shortcut to directory or to file, virtual presenti
     |3|Field bunber|
     |\<filename>|Name of file to analise|
 
-We can start command by command in linux.
+5. Join commands with pipe
 
-`username@linux:~$ cut -d ">" -f 3 \<filename> | sort`
+    We can start command by command in linux.
 
-| - is named ***pipe*** and it;s separate of commands. That's mean start first command and than after start second command and finally display the result of both commands.
+    `username@linux:~$ cut -d ">" -f 3 \<filename> | sort`
+
+    | - is named ***pipe*** and it;s separate of commands. That's mean start first command and than after start second command and finally display the result of both commands.
+
+### 2.7 Command *grep* and regular expressions
+
+Command **grep** is using to search text in files. This command is case sensitive.
+
+`username@linux:~/Documents$ grep \<search_word> <where_path>`
+
+Description:
+|Part of command|Description|
+|-:|:-|
+|grep|Command name|
+|-i|Ignore case sensitive|
+|linux|Word searched in file|
+|./|Current directory|
+|*|All files in the directory|
+
+Regular expressions:
+|Regular Expression|Description|
+|-:|:-|
+|[A-Z]*|Any words contains only capital letters|
+|[0-9]*|Any numbers|
+|[A-Za-z]*@[A-Za-z]*.com|Simple regular expression for searching of mails ends witn ***.com***|
+|www\.[a-z]*\.com|Any web url ends with ***.com***|
+
+### 2.8 Redirection of output
+
+If we want to make some sorting for example and result of command *sort* save to another file we can use use redirection of output **\>** using this symbol.
+
+`username@linux:~/Documents sort \<filename> > <new_filename>`
+
+Description:
+|Part of command|Description|
+|-:|:-|
+|sort|Awesome command which display result on terminal|
+|\<filename>|Operated file|
+|\<new_filename>|Target file to save the result of command operation. If file is not exist, file will create automatically. If you redirect output to file witch you operate (filename = new_filename) this file will be erase. **Reason:** this redirection first execute second part (create new file to save result) and after execute first part. And if you save result to the same file it will failed|
+
+To append some content from another file use symbol **\>>**
+
+`username@linux:~/Documents sort \<filename> >> <new_filename>`
+
+Usefull command with ***grep*** - imagine we want to find some text in some directory which cam throw errors like permission denied or somethig like this and we want to save success result in one file and errors result in another file we can use next command:
+
+`username@linux:~$ grep username /etc/* > good.txt 2> errors.txt`
+
+Description:
+|Part of command|Description|
+|-:|:-|
+|grep|Command|
+|username|Searching word in files in directory|
+|/etc/*|Awesome path where locate some file which we want to searched|
+|>|Redirect of success result to file|
+|good.txt|File with success result of searching|
+|2>|Sort and redirect of error results of searching|
+|error.txt|Resuy file with errors|
