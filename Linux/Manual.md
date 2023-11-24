@@ -26,8 +26,8 @@
 2. What's mean in terminal?
 
     ```linux
-    aleksei@linux:~$
-    aleksei - is a current user
+    username@linux:~$
+    username - is a current user
     linux - is a current server
     ~ - we are in ROOT directory
     ```
@@ -91,3 +91,4 @@
 |mv \<filename> <new_filename>|Rename/replace file. dot before filename (\<.filename>) means that file is hidden. File will be replaced when \<new_filename> is directory absolute path.|
 
 ## 5. Work With Direstories
+
