@@ -4,7 +4,7 @@
 
 [1. Installation Linux to PC and introduction](#1-installation-linux-to-pc-and-introduction)<br>
 [1.1 Installation VM](#11-installation-vm)<br>
-[1.2 Prepeare terminal](#12-prepeare-terminal)<br>
+[1.2 Prepeare of terminal](#12-prepeare-of-terminal)<br>
 [2. Work with terminal and base commands](#2-work-with-terminal-and-base-commands)<br>
 [2.1 Base Commands](#21-base-commands)<br>
 [2.2 Files And Directories Navigation](#22-files-and-directories-navigation)<br>
@@ -14,6 +14,8 @@
 [2.6 Commands *find, cut, sort, wc, | (pipe)*](#26-commands-find-cut-sort-wc--pipe)<br>
 [2.7 Command *grep* and regular expressions](#27-command-grep-and-regular-expressions)<br>
 [2.8 Redirection of output](#28-redirection-of-output)<br>
+[2.9 Archiving and compression of data tar, zip, gzip, bzip2, xz](#29-archiving-and-compression-of-data-tar-zip-gzip-bzip2-xz)<br>
+[2.10 Memory and processes: ***top, free, ps, dmesg***](#210-memory-and-processes-top-free-ps-dmesg)<br>
 
 ## 1. Installation Linux to PC and introduction
 
@@ -26,7 +28,7 @@
 
 ![Alt text](images/cd_insert_additions.png)
 
-### 1.2 Prepeare terminal
+### 1.2 Prepeare of terminal
 
 1. Terminal -> preference -> Profiles -> Edit ptofile
 
@@ -231,7 +233,7 @@ Regular expressions:
 
 If we want to make some sorting for example and result of command *sort* save to another file we can use use redirection of output **\>** using this symbol.
 
-`username@linux:~/Documents sort \<filename> > <new_filename>`
+`username@linux:~/Documents$ sort \<filename> > <new_filename>`
 
 Description:
 |Part of command|Description|
@@ -242,7 +244,7 @@ Description:
 
 To append some content from another file use symbol **\>>**
 
-`username@linux:~/Documents sort \<filename> >> <new_filename>`
+`username@linux:~/Documents$ sort \<filename> >> <new_filename>`
 
 Usefull command with ***grep*** - imagine we want to find some text in some directory which cam throw errors like permission denied or somethig like this and we want to save success result in one file and errors result in another file we can use next command:
 
@@ -258,3 +260,169 @@ Description:
 |good.txt|File with success result of searching|
 |2>|Sort and redirect of error results of searching|
 |error.txt|Resuy file with errors|
+
+### 2.9 Archiving and compression of data tar, zip, gzip, bzip2, xz
+
+1. Command **tar**
+
+    Archiving is provided by command **tar** - **T**ape **AR**chive. This command combines files or directories into one file. tar command is not compress. <br>
+
+    Example:<br>
+    `username@linux:~/Documents$ tar cvf mytar.tar Folder1`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |tar|Command|
+    |c|Create archive|
+    |v|Verbouse for visualisation of process|
+    |f|Archive as file. **f** always must be as last argument. It's important|
+    |mytar.tar|File name with extension **.tar**. That's mean that will be created archive **.tar**|
+    |Folder1|What we want to archiving. Can be some file, directories with all content etc|
+
+    To test archive tar file we can use command<br>
+
+    `username@linux:~/Documents$ tar tf mytar.tar`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |tar|Command|
+    |t|Test tar file and display of content|
+    |f|File|
+    |mytar.tar|Source tar file|
+
+
+    To unpack archive tar file we can use command<br>
+
+    `username@linux:~/Documents$ tar xvf mytar.tar`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |tar|Command|
+    |x|Extract tar file|
+    |v|Verbouse|
+    |f|File|
+    |mytar.tar|Source tar file|
+
+    To create archive file with **gzip** compression use next command:
+
+    `username@linux:~/Documents$ tar cvzf myGZIP.gz Folder1`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |tar|Command|
+    |c|Create archive|
+    |v|Verbouse for visualisation of process|
+    |z|Use **gzip** compression|
+    |f|Archive as file. **f** always must be as last argument. It's important|
+    |myGZIP.gz|File name with extension **.gz**. That's mean that will be created compressed archive **.gz**|
+    |Folder1|What we want to archiving. Can be some file, directories with all content etc|
+    
+    To create archive file with **bzip2** compression use next command:
+
+    `username@linux:~/Documents$ tar cvjf myBZIP.bz2 Folder1`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |tar|Command|
+    |c|Create archive|
+    |v|Verbouse for visualisation of process|
+    |j|Use **bzip2** compression|
+    |f|Archive as file. **f** always must be as last argument. It's important|
+    |myBZIP.bz2|File name with extension **.bz2**. That's mean that will be created compressed archive **.bz2**|
+    |Folder1|What we want to archiving. Can be some file, directories with all content etc|
+    
+    To create archive file with **xz** compression use next command:
+
+    `username@linux:~/Documents$ tar cvJf myX|.xz Folder1`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |tar|Command|
+    |c|Create archive|
+    |v|Verbouse for visualisation of process|
+    |J|Use **xz** compression|
+    |f|Archive as file. **f** always must be as last argument. It's important|
+    |myBZIP.bz2|File name with extension **.xz**. That's mean that will be created compressed archive **.xz**|
+    |Folder1|What we want to archiving. Can be some file, directories with all content etc|
+
+2. Commands **gzip, bzip2, xz**
+
+    Commands **gzip, bzip2, xz** needs to compress of only one file, not some files or directory but **ONLY** one file. 
+
+    Example:<br>
+    `username@linux:~/Documents$ gzip mytar.tar`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |gzip|Command|
+    |mytar.tar|File for compression. After compression it's append **.gz** extension|
+
+    To decompress gzip file use next command:
+
+    Example:<br>
+    `username@linux:~/Documents$ gunzip mytar.tar.gz`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |gunzip|Command|
+    |mytar.tar.gz|File for decompression.|
+
+    The similar as gzip command is command bzip2. Using this command is better for compression.
+
+    Example:<br>
+    `username@linux:~/Documents$ bzip2 mytar.tar`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |bzip2|Command|
+    |mytar.tar|File for compression. After compression it's append **.bz2** extension|
+
+    To decompress bz2 file use next command:
+
+    Example:<br>
+    `username@linux:~/Documents$ bunzip2 mytar.tar.bz2`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |bunzip2|Command|
+    |mytar.tar.bz2|File for decompression.|
+
+    The similar as gzip or bzip2 command is command xz.
+
+    Example:<br>
+    `username@linux:~/Documents$ xz mytar.tar`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |xz|Command|
+    |mytar.tar|File for compression. After compression it's append **.xz** extension|
+
+    To decompress xz file use next command:
+
+    Example:<br>
+    `username@linux:~/Documents$ unxz mytar.tar.xz`
+
+    Description:
+    |Part of command|Description|
+    |-:|:-|
+    |unxz|Command|
+    |mytar.tar.xz|File for decompression.|
+
+### 2.10 Memory and processes: ***top, free, ps, dmesg***
+
+The simple base command in Linux is **top* - it is Task Manager in Linux, display all running on PC. Start with nex command:
+
+`username@linux:~$ top`
+
+![Alt text](images/top.png)
