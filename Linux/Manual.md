@@ -1,21 +1,25 @@
 # Linux
 
-## Content
+## Содержание
 
-[1. Installation Linux to PC and introduction](#1-installation-linux-to-pc-and-introduction)<br>
-[1.1 Installation VM](#11-installation-vm)<br>
-[1.2 Prepeare of terminal](#12-prepeare-of-terminal)<br>
-[2. Work with terminal and base commands](#2-work-with-terminal-and-base-commands)<br>
-[2.1 Base Commands](#21-base-commands)<br>
-[2.2 Files And Directories Navigation](#22-files-and-directories-navigation)<br>
-[2.3 Work with files](#23-work-with-files)<br>
-[2.4 Work With Direstories](#24-work-with-direstories)<br>
-[2.5 Links creating](#25-links-creating)<br>
-[2.6 Commands *find, cut, sort, wc, | (pipe)*](#26-commands-find-cut-sort-wc--pipe)<br>
-[2.7 Command *grep* and regular expressions](#27-command-grep-and-regular-expressions)<br>
-[2.8 Redirection of output](#28-redirection-of-output)<br>
-[2.9 Archiving and compression of data tar, zip, gzip, bzip2, xz](#29-archiving-and-compression-of-data-tar-zip-gzip-bzip2-xz)<br>
-[2.10 Memory and processes: ***top, free, ps, dmesg***](#210-memory-and-processes-top-free-ps-dmesg)<br>
+[1. Установка и подготовка Linux](#1-installation-linux-to-pc-and-introduction)<br>
+[1.1 Установка VM](#11-installation-vm)<br>
+[1.2 Подговка терминала](#12-prepeare-of-terminal)<br><br>
+[2. Работа с терминалом, основные команды](#2-work-with-terminal-and-base-commands)<br>
+[2.1 Базовые команды](#21-base-commands)<br>
+[2.2 Навигация по файлам и директориям](#22-files-and-directories-navigation)<br>
+[2.3 Работа с файлами](#23-work-with-files)<br>
+[2.4 Работа с директориями](#24-work-with-direstories)<br>
+[2.5 Создание линков](#25-links-creating)<br>
+[2.6 Команды *find, cut, sort, wc, | (pipe)*](#26-commands-find-cut-sort-wc--pipe)<br>
+[2.7 Команды *grep* and regular expressions](#27-command-grep-and-regular-expressions)<br>
+[2.8 Перенаправление вывода](#28-redirection-of-output)<br>
+[2.9 Архивация и сжатие tar, zip, gzip, bzip2, xz](#29-archiving-and-compression-of-data-tar-zip-gzip-bzip2-xz)<br>
+[2.10 Память и процессы: ***top, free, ps, dmesg***](#210-memory-and-processes-top-free-ps-dmesg)<br>
+[2.11 Редактирование файлов: ***gedit, pico, nano, vim***](#211-редактирование-файлов-gedit-pico-nano-vim)<br><br>
+[3 Продвинутые темы Linux](#3-продвинутые-темы-linux)<br>
+[3.1 Типы аккаунтов: root, standard, admin](#31-типы-аккаунтов-root-standard-admin)<br>
+
 
 ## 1. Installation Linux to PC and introduction
 
@@ -426,3 +430,57 @@ The simple base command in Linux is **top* - it is Task Manager in Linux, displa
 `username@linux:~$ top`
 
 ![Alt text](images/top.png)
+
+Посмотреть количество свободной памяти команда **free**
+
+`username@linux:~$ free`
+
+Показывает количество памяти в байтах. Чтобы посмотреть в более человеческом виде, следующая команда:
+
+`username@linux:~$ free -h` - где -h - **human**
+
+Самая используемая команда ***ps***. Показывает процессы, завущенные данным пользователем. Чтобы посмотреть запущенные процессы другого пользователя:
+
+`username@linux:~$ ps -u \<username>` - **-u** - **U**ser, username - имя пользователя, процессы которого мы хотим посмотреть. При выводе показывает абсолютно все процессы пользователя. 
+
+Команда 
+`username@linux:~$ ps x`
+показывает вообще все процессы всех пользователей.
+
+Команда
+`username@linux:~$ ps -aux`
+
+выводит на экран информацию о всех процессах всех пользователей детально.
+
+|Часть|Описание|
+|-:|:-|
+|ps|Команда|
+|-a|ALL все процессы|
+|u|USER пользвателя|
+|x|EXTEND расширенный формат|
+
+Где хранятся логи? В папке **/var/log ** все все логи.
+
+`username@linux:~$ cd /var/log`
+
+Лог, который не записывается на диске, находится в памяти и живет, только пока компьютер включен:
+
+`username@linux:/var/log$ dmesg`
+
+Это лог Линуксовского ядра. Используется при troubleshooting.
+
+### 2.11 Редактирование файлов: ***gedit, pico, nano, vim***
+
+Несколько редакторов. Самый простой **gedit**. Как *notepad* в Windows. Это вариант, когда есть GUI.
+
+Когда нет GUI:
+
+1. ***nano*** - самый классный. Удобный.
+2. ***pico*** - тоже самое, что и ***nano***
+3. ***vi*** или ***vim*** - самый древний
+
+## 3 Продвинутые темы Linux
+
+### 3.1 Типы аккаунтов: root, standard, admin
+
+Виды аккаунтов: **Standard**, **Administrator**. Есть еще один вид аккаунтов, его не создают, а он создается автоматически при установке Linux, это аккаунт **root** Других аккаунтов нет. Администратор аккаунт может использовать команду **sudo**, стандарт акккаунт нет.
