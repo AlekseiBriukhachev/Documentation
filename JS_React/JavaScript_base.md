@@ -16,7 +16,6 @@
 [2.8 Копирование массивов](#28-копирование-массивов)<br>
 [2.9 Объектно-ориентированное програмирование](#29-объектно-ориентированное-програамирование)<br>
 
-
 ## 1 Подготовка к работе
 
 ### 1.1 Конфигурация VSCode
@@ -368,3 +367,151 @@ Object.setPrototype(john, soldier);
 ```
 
 Вызываем метод **setPrototype()**, в качестве параметров указываем новый созданный объект, второй параметр - прототип нового объекта.
+
+
+### 2.10 Динамическая типизация
+
+Динамическая типизация - превращение одного типа данных в другой, например числовой тип в строковый и наоборот.
+
+1. To String
+
+```JavaScript
+//1) оборачивание
+String(6);
+
+//2)конкатенация
+console.log(6 + '');
+
+const num = 5;
+console.log("https://vk.com/catalog" + num);
+
+const fontSize = 26 + 'px';
+```
+
+2. To number
+
+```JavaScript
+//1) оборачивание
+Number('6');
+
+//2) унарный плюс
+console.log(+'5');
+
+//3) парсинг
+parseInt('15px', 10);
+```
+
+3. To boolean
+
+```JavaScript
+// 0, '', null, undefined, NaN; => false
+```
+
+### 2.11 Получение элементов со страницы
+
+DOM - **D**ocument **O**bject **M**odel объектная модель документа. Глобалный объект, есть свои методы.
+
+Чтобы обратиться к DOM нужно использовать использовать сущность, которая называется **document**:
+
+```JavaScript
+//1. Создаем вместилище информации. 
+//Обращение к документу и ролучение элемента по его ID со страницы
+const box = document.getElementById('box');
+
+//2. Получаем все кнопки по тэгу
+// Получили псевдомассив
+const  btns = document.getElementByTagName('button');
+```
+
+![Alt text](/JS_React/img/btns_array.png)
+
+```JavaScript
+//Обращение к какой-то конкретной кнопке
+const  btns = document.getElementByTagName('button')[1];
+
+//или
+const  btns = document.getElementsByTagName('button');
+console.log(btns[1]);
+
+//3. Получение элементов по классу.
+// Также получаем массив элементов
+const circles = document.getElementsByClassName('circle');
+
+//4. Получение элементов по CSS селектору - более современный способ
+// Получаем коллекцию
+const hearts = document.querySelectorAll('.heart');
+
+//5. Получение одного элемента по CSS селектору
+// Возвращает первый попавшийся элемент.
+const oneHeart = document.querySelector('.heart');
+```
+
+### 2.12 Работа с элементами на странице
+
+```JavaScript
+//1. Поменять свойства у определенного элемента
+box.style.backgroundColor = 'blue';
+box.style.width = '500px';
+
+box.style.cssText = 'background-color: blue; width: 500px';
+
+btns[1].style.borderRadius = '100%';
+
+//2. Поменять свойства у нескольких элементов
+for (let i = 0; i < hearts.length; i++) {
+    hearts[i].style.backgroundColor = 'blue';
+}
+
+//Специально перебирающие элементы
+hearts.forEach(item => {
+    item.style.backgroundColor = 'blue';
+});
+```
+
+***Основные методы для работы с элементами страницы***
+Очень часто части сайти генерируются с помощью JS, на таком принципе построен React. ДЛ этого используется метод **document.createElement()**.
+
+```JavaScript
+//Параметр - элемент, который создается.
+//Таким способом моздается элемент, который сущестыует только внутри скрипта
+const div = document.createElement('div');
+// Таким же образом создаются и текстовый узлы
+const text = document.createTextNode('Тут был я');
+
+//Теперь мы можем этот элемент застилизовать. 
+// Существует следующий способ, но не рекомендуется, потому что устаревший
+div.className('black');
+
+//Вместо этого рекомендуется использовать другой новейший способ
+div.classList.add('black');
+
+//Добавление элемента на страницу - через дерево DOM
+document.body.append(div); //Вставка элемента в конец страницы
+document.querySelector('.wrapper').append(div); //вставка элемента внутрь какого-то класса
+document.querySelector('.wrapper').prepend(div); //вставка элемента в начало какого-то класса
+hearts[0].before(div); //вставка элемента перед каким-то другим элементом
+hearts[0].after(div); //вставка элемента после какого-то дугого элемента
+circles[0].remove(); //удаление элемента со страницы
+hearts[0].replaceWith(circles[0]); //замена одного элемента другим
+```
+
+Устаревшие конструкции:
+
+```JavaScript
+document.body.appendChild(div); //Вставка элемента в конец страницы
+wrapper.insertBefore(div, hearts[0]); //вставка элемента, первый параметр - какой элемент вставляем, второй - перед каким элементом вставляем
+wrapper.removeChilde(hearts[1]); //удаление элемента со страницы, у родителя wrapper удалить элемент hearts[1]
+wrapper.replaceChild(circles[0], hearts[0]);//замена одного элемента circles[0] другим hearts[0]
+```
+
+Добавление текста или html кода прямо в элементы:
+
+```JavaScript
+div.innerHTML = "Hello World"; //вставка текста в элемент страницы
+div.innerHTML = "<h1>Hello World</h1>"; //вставка текста в элемент страницы в HTML элемент
+div.textContent = "Hello";//вставка текста в элемент страницы, работает только с текстом
+div.insertAdjacentHTML('beforebegin', '<h2>Hello</h2>');//вставка текста перед началом элемента
+div.insertAdjacentHTML('afterbegin', '<h2>Hello</h2>');//вставка текста внутри элемента вначале
+div.insertAdjacentHTML('beforeend', '<h2>Hello</h2>');//вставка текста внутри элемента перед концом элемента
+div.insertAdjacentHTML('afterend', '<h2>Hello</h2>');//вставка текста внутри элемента после конца элемента
+```
