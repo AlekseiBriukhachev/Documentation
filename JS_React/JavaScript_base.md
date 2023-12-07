@@ -515,3 +515,133 @@ div.insertAdjacentHTML('afterbegin', '<h2>Hello</h2>');//вставка текс
 div.insertAdjacentHTML('beforeend', '<h2>Hello</h2>');//вставка текста внутри элемента перед концом элемента
 div.insertAdjacentHTML('afterend', '<h2>Hello</h2>');//вставка текста внутри элемента после конца элемента
 ```
+
+### 2.13 События и их обработчики
+
+1. Пример оформления обработчика событий, ***КРАЙНЕ НЕ РЕКОМЕНДУЕТСЯ ПРИМЕНЯТЬ***:
+
+```html
+<button onclick="alert('Click') id="btn">Press Me</button>
+```
+
+2. Использование свойства DOM дерева, в реальных проектах такой тоже практически не используется:
+
+```JavaScript
+const btn = document.querySelector('button');
+
+btn.onclick = function() {
+    //какой-то код
+};
+```
+
+Имеет одну проблему: при повторении данного кода в скрипте ниже первый код теряется.
+
+3. Слушатели событий:
+
+```JavaScript
+btn.addEventListener('название_события', () => {
+    //какой-то код
+});
+```
+
+Если нам необходимо получать какие-то данные о том элементе, с которым взаимодействуем, то в качестве параметра в callback функцию нужно передавать параметр **event**.
+
+```JavaScript
+btn.addEventListener('название_события', (event) => {
+    //какой-то код
+    console.log(event.target);
+    event.target.remove();
+});
+```
+
+Удаление слушателя событий:
+
+Чтобы удалить обработчик событий, эта функция должна иметь тоже самое имя:
+
+```JavaScript
+const deleteElement = (event) => {
+    event.target.remove();
+};
+btn.addEventListener('click', deleteElement);
+btn.deleteElement('click', deleteElement);
+```
+
+Всплытие события - это когда обработчик события срабатывает на самом вложеннос элементе, потом на родителе и поднимается все выше и выше по DOM дереву.
+
+Отмена события. 
+
+```JavaScript
+const link = document.querySelector('a');
+
+link.addEventListener('click', (event) => {
+    event.preventDefault(); // помещается в самое начало обработчика событий
+    // какой-то код
+});
+```
+
+Как навесить одно и тоже событие на несколько элементов?
+
+```JavaScript
+const btn = document.querySelectorAll('button');
+btn.forEach(btn => () {
+    btn.addEventListener('click', deleteElement);
+});
+```
+
+### 2.14 Навигация по DOM - элементам, data-атрибуты, преимущество for/of
+
+```JavaScript
+document.head; //Получаем содержимое заголовка
+document.body; //Получаем содержимое тела
+document.documentElement; //получаем содержимое всей страницы
+document.body.childNodes; //получаем элементы, которые являются детьми у body
+document.body.firstChild;//получаем первого потомка 
+document.body.lastChild; //получаем последнего потомка
+
+document.querySelector('#current').parentNode; // получаем элемент родитель
+document.querySelector('#current').parentNode.parentNode; // получаем элемент родитель родителя
+
+```
+
+Data-аттрубуты - расставляются в верстке, чтобы ориетироваться на какин-то элементы. Как получить:
+
+```JavaScript
+//получение элемента по его data-аттрибуту и следующего за ним элемента
+document.querySelector('[data-current="3"]').nextSibling;
+//получение элемента по его data-аттрибуту и предыдущего элемента
+document.querySelector('[data-current="3"]').previousSibling;
+
+```
+
+Перебор всех childNodes, которые лежат например в body и избавиться от всех тектовых node:
+
+```JavaScript
+for (let node of document.body.childNodes) {
+    if (node.nodeName == '#text') {
+        continue;
+    }
+    console.log(node);
+}
+```
+
+### 2.15 Рекурсия
+
+Прием, когда функция вызывает сама себя, называется **рекурсией**.
+
+Возведение в степень:
+
+```JavaScript
+function pow(x, n) {
+    let result = 1;
+
+    for (let i = 0; i < n; i++>) {
+        result *= x;
+    }
+    return result;
+}
+
+pow(2, 1); //2
+pow(2, 2); //4
+pow(2, 3); //8
+pow(2, 4); //16
+```
