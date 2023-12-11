@@ -14,7 +14,15 @@
 [2.6 Массивы и псевдомассивы](#26-массивы-и-псевдомассивы)<br>
 [2.7 Копирование объектов](#27-копирование-объектов)<br>
 [2.8 Копирование массивов](#28-копирование-массивов)<br>
-[2.9 Объектно-ориентированное програмирование](#29-объектно-ориентированное-програамирование)<br>
+[2.9 Объектно-ориентированное програмирование](#29-объектно-ориентированное-програмирование)<br>
+[2.10 Динамическая типизация](#210-динамическая-типизация)<br>
+[2.11 Получение элементов со страницы](#211-получение-элементов-со-страницы)<br>
+[2.12 Работа с элементами на странице](#212-работа-с-элементами-на-странице)<br>
+[2.13 События и их обработчики](#213-события-и-их-обработчики)<br>
+[2.14 Навигация по DOM - элементам, data-атрибуты, преимущество for/of](#214-навигация-по-dom---элементам-data-атрибуты-преимущество-forof)<br>
+[2.15 Рекурсия](#215-рекурсия)<br>
+[2.16 События на мобильных устройствах](#216-события-на-мобильных-устройствах)<br>
+[2.17 Async, defer, динамические скрипты](#217-async-defer-динамические-скрипты)<br>
 
 ## 1 Подготовка к работе
 
@@ -368,7 +376,6 @@ Object.setPrototype(john, soldier);
 
 Вызываем метод **setPrototype()**, в качестве параметров указываем новый созданный объект, второй параметр - прототип нового объекта.
 
-
 ### 2.10 Динамическая типизация
 
 Динамическая типизация - превращение одного типа данных в другой, например числовой тип в строковый и наоборот.
@@ -568,7 +575,7 @@ btn.deleteElement('click', deleteElement);
 
 Всплытие события - это когда обработчик события срабатывает на самом вложеннос элементе, потом на родителе и поднимается все выше и выше по DOM дереву.
 
-Отмена события. 
+Отмена события.
 
 ```JavaScript
 const link = document.querySelector('a');
@@ -631,6 +638,7 @@ for (let node of document.body.childNodes) {
 Возведение в степень:
 
 ```JavaScript
+//Функция без рекурсии
 function pow(x, n) {
     let result = 1;
 
@@ -640,8 +648,179 @@ function pow(x, n) {
     return result;
 }
 
+//функция с рекурсией
+function pow(x, n) {
+    if (n === 1) {
+        return x;
+    } else {
+        return x * pow(x, n - 1);
+    }
+}
+//функция сама себя запускает внутри
+
 pow(2, 1); //2
 pow(2, 2); //4
 pow(2, 3); //8
 pow(2, 4); //16
+```
+
+Пример на большом оюъекте:
+
+```JavaScript
+let students = {
+    js: [{
+        name: 'John',
+        progress: 100
+    }, {
+        name: 'Ivan',
+        progress: 60
+    }],
+
+    html: {
+        basic: [{
+            name: 'Peter',
+            progress: 20
+        }, {
+            name: 'Ann',
+            progress: 18
+        }],
+
+        pro: [{
+            name: 'Sam',
+            progress: 10
+        }]
+    }
+};
+
+//Функция без рекурсии
+function getTotalProgressByIteration(data) {
+    let total = 0;
+    let students = 0;
+
+    for (let course of Object.values(data)) {
+        if (Array.isArray(course)) {
+            students += course.length;
+            
+            for (let i = 0; i < course.length; i++) {
+                total += course[i].progress;
+            }
+        } else {
+            for (let subCourse of Object.values(course)) {
+                students += subCourse.length;
+
+                for (let i = 0; i < subCourse.length; i++) {
+                    total += subCourse[i].progress;
+                }  
+            }
+        }
+    }
+
+    return total / students;
+}
+
+console.log(getTotalProgressByIteration(data));
+
+//функция с рекурсией
+function getTotalProgressByRecursion(data) {
+
+    if (Array.isArray(data)) {
+        let total = 0;
+        
+        for (let i = 0; i < course.length; i++) {
+            total += data[i].progress;
+        }
+
+        return [total, data.length];
+    } else {
+        let total = [0, 0];
+
+        for (let subData of Object.values(data)) {
+            const subDataArr = getTotalProgressByRecursion(subData);
+            total[0] += subDataArr[0];
+            total[1] += subDataArr[1];
+        }
+
+        return total;
+    }
+    const result = getTotalProgressByRecursion(students);
+    console.log(result[0] / result[1]);
+} 
+```
+
+### 2.16 События на мобильных устройствах
+
+|Команда|Описание|
+|-:|:-|
+|touchstart|Срабатывает при касании до экрана|
+|touchmove|Срабатывает при движении пальцем по экраны устройства|
+|touchend|Срабатывает при отрывании пальца от экрана|
+|touchenter|Срабатывает, когда придвижении пальцем по экрану наскакиваем на элемент, на который повешено это событие.|
+|touchleave|Срабатывает, когда придвижении пальцем по экрану покидает элемент, на которое повешено это событие.|
+|touchcancel|Срабатывает, когда не регистрируется точка соприкосновения альца с экраном.|
+
+```JavaScript
+windows.addEventListener('DOMContentLoaded', () => {
+    const box = document.querySelector('.box');
+
+    box.addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        console.log('Start');
+    });
+    box.addEventListener('touchmove', (event) => {
+        event.preventDefault();
+        console.log('Move');
+    });
+    box.addEventListener('touchend', (event) => {
+        event.preventDefault();
+        console.log('End');
+    });
+});
+```
+
+На мобильных устройствах это удобно, когда необходимо сделать **swipe-событие** или **"щепотка"** - увеличение или уменьшение экрана.
+
+Существует 3 главных свойства при рпботе с сенсорными устройствами:
+
+|Свойство|Описание|
+|-:|:-|
+|touches|Свойство выдаем список всех пальцев, взаимодействующих с экраном|
+|targetTouches|Свойство выдаем список всех пальцев, взаимодействующих c конкретным элементом|
+|changedTouches|Список пальцев, учавствующие в текущем событии|
+
+[Полезная статья про мобильные события](https://habr.com/ru/companies/sibirix/articles/227175/)
+
+[Hammer.js](https://hammerjs.github.io)
+
+### 2.17 Async, defer, динамические скрипты
+
+Размещение скрипта в head страницы пораждает две проблемы:
+
+1. Поскольку страницы не загрузилась до конца и если в скрипте есть в коде взаимодействие с некоторыми элементами, то получится ошибка.
+
+2. При загрузке скрипт блокирует страницу, т.е. при зугрузке страницы доходит до загрузки скрипта и на этом месте зависает, пока не загрузит скрипт целиком.
+
+Для решения этих и других проблем, были придуманы 2 аттрибата **defer**, **async**.
+
+`<script defer src="js/script.js"></script>`
+
+**defer** указывает браузеру, что он должен продолжать загружать страницу дальше и грузить скрипт в фоновом режиме.
+
+1. Никогда не блокирует страницу.
+2. Скрипты с таким аттрибутом выполнятся тогда, когда DOM-дерево уже готово.
+
+Особенности аттрибута **async**:
+
+1. Сраница не ждет асинхронных скриптов - страница обрабатывается и отображается.
+2. События в *DOMContentLoaded* и асинхронные скрипты не ждут друг друга и выполняются как только они загрузились.
+3. Асинхронные скрипты не ждут друг друга и выполняются как только они загрузились.
+
+Динамические скрипты:
+
+```JavaScript
+function loadScript(src) {
+    const script document.createElement('script');
+    script.src = src;
+    script.async = false;
+    document.body.append(script);
+}
 ```
