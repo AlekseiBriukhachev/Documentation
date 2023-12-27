@@ -1,4 +1,4 @@
-# JavaScript and React
+# 1. Основы JavaScript
 
 ## Содержание
 
@@ -49,12 +49,21 @@ Manager of packages npm. Needs to install Node.js from official site nodejs.org.
 
 ### 1.2 Конфигурация ESlint
 
-1. ESInt is check of code during proramming: logic errors or somthing like this. It checks all mistakes automaticaly.
+1. Установить плагин ESLint ([ESLint dokumentation](https://eslint.org/)).
 
-1. Install this plugin.
-[ESLint dokumentation](https://eslint.org/) installation with maneger of packages **npm**.
+1. Сначала нужно инициализировать весь проект.
+
+`npm init`
+
+2. Запускаем конфигурацию ESlint
+
+
 
 `npm init @eslint/config`
+
+3. Ответить на ряд вопросов, например
+
+![Alt text](img/esliny_config.png)
 
 2 Атвоматическое форматирование при сохранении файла:
 
